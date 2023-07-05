@@ -30,7 +30,7 @@ public class Creation {
     //16 skill adds, no more than 3 skill adds to any one skill
 
     private static void generateName() {
-        System.out.println("Enter your name");
+        System.out.println("Enter your name:");
         playerName = scanner.nextLine();
         System.out.println("Enter a name for your character:");
         characterName = scanner.nextLine();
@@ -196,9 +196,11 @@ public class Creation {
                 if (i < 3 && parsedChoice < 11) {
                     System.out.println("Entered Value below minimum for Attribute. Try again.");
                     i--;
+                    continue;
                 } else if (i == 3 && parsedChoice > 10 || i < 3 && parsedChoice > 11) {
                     System.out.println("Entered Value above maximum for this Attribute. Try again.");
                     i--;
+                    continue;
                 }
 
                 attributes.put(attributesArray[i], parsedChoice);
@@ -250,9 +252,11 @@ public class Creation {
                 if (i == 3 && parsedChoice < 11 || i == 4 && parsedChoice < 10) {
                     System.out.println("Entered Value below minimum for Attribute. Try again.");
                     i--;
+                    continue;
                 } else if (i != 3 && i != 4 && parsedChoice > 11) {
                     System.out.println("Entered Value above maximum for this Attribute. Try again.");
                     i--;
+                    continue;
                 }
 
                 attributes.put(attributesArray[i], parsedChoice);
@@ -305,9 +309,11 @@ public class Creation {
                 if (i < 2 && parsedChoice > 10 || i == 3 && parsedChoice > 11) {
                     System.out.println("Entered Value above maximum for Attribute. Try again.");
                     i--;
+                    continue;
                 } else if (i >= 4 && parsedChoice < 11) {
                     System.out.println("Entered Value below minimum for this Attribute. Try again.");
                     i--;
+                    continue;
                 }
 
                 attributes.put(attributesArray[i], parsedChoice);
@@ -316,6 +322,7 @@ public class Creation {
             } catch (Exception e) {
                 System.out.println("Invalid Entry, valid numbers are 1 - attribute max");
                 i--;
+                continue;
             }
         }
 
@@ -326,7 +333,7 @@ public class Creation {
     }
 
     private static void buySkillAdds() {
-        System.out.println("You have 16 Skill Adds to assign to different skills.\nThe Reality Skill gets the first Adds.");
+        System.out.println("You have " + adds + " Skill Adds to assign to different skills.\nThe Reality Skill gets the first Adds.");
         System.out.println("After that, enter the name of the skill and the number of adds given to it.");
         System.out.println("No one skill can have more than 3 Adds given to it.");
 
@@ -335,7 +342,7 @@ public class Creation {
 
         int numberOfSkills = numberOfSkills();
 
-        for (int i = 0; i < numberOfSkills; i++) {
+        for (int i = 0; i < numberOfSkills || adds > 0; i++) {
             System.out.println("Adds remaining: " + adds);
             System.out.println("Enter the name of the Skill:");
             String skillName = scanner.nextLine();
@@ -347,9 +354,16 @@ public class Creation {
             try {
                 parsedAssignedAdds = Integer.parseInt(assignedAdds);
 
+                if (adds - parsedAssignedAdds < 0) {
+                    System.out.println("Invalid Entry, not enough Points. Try again");
+                    i--;
+                    continue;
+                }
+
                 if (parsedAssignedAdds < 1 || parsedAssignedAdds > 3) {
                     System.out.println("Invalid Entry, Adds must be between 1 and 3 Inclusive. Try again.");
                     i--;
+                    continue;
                 }
 
                 skills.put(skillName, parsedAssignedAdds);
@@ -357,6 +371,7 @@ public class Creation {
             } catch (Exception e) {
                 System.out.println("Invalid Entry, try again");
                 i--;
+                continue;
             }
         }
     }
