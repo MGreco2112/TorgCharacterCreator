@@ -1,5 +1,7 @@
 package Classes;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Creation {
@@ -7,6 +9,8 @@ public class Creation {
     private static String playerName = "";
     private static String characterName = "";
     private static String cosm = "";
+    private static Map<String, Integer> axioms = new HashMap<>();
+    private static Map<String, Integer> attributes = new HashMap<>();
     //66 attribute points
     //pick a template, either Adrenalin, Willpower, or Presence
         //Adrenalin:        Willpower:          Presence:
@@ -48,6 +52,11 @@ public class Creation {
 
         try {
             parsedCosmChoice = Integer.parseInt(cosmChoice);
+
+            if (parsedCosmChoice > 7 || parsedCosmChoice < 1) {
+                System.out.println("Invalid Choice, try again");
+                chooseCosm();
+            }
         } catch (Exception e) {
             System.out.println("Invalid Choice, try again");
             chooseCosm();
@@ -56,29 +65,83 @@ public class Creation {
         switch (parsedCosmChoice) {
             case 1:
                     cosm = "Core Earth";
+                    axioms.put("Magic", 7);
+                    axioms.put("Social", 21);
+                    axioms.put("Spiritual", 9);
+                    axioms.put("Tech", 23);
                     break;
             case 2:
                     cosm = "Aysle";
+                    axioms.put("Magic", 18);
+                    axioms.put("Social", 18);
+                    axioms.put("Spiritual", 16);
+                    axioms.put("Tech", 15);
                     break;
             case 3:
                     cosm = "Cyberpapacy";
+                    axioms.put("Magic", 10);
+                    axioms.put("Social", 18);
+                    axioms.put("Spiritual", 14);
+                    axioms.put("Tech", 26);
                     break;
             case 4:
                     cosm = "Nile Empire";
+                    axioms.put("Magic", 12);
+                    axioms.put("Social", 20);
+                    axioms.put("Spiritual", 17);
+                    axioms.put("Tech", 21);
                     break;
             case 5:
                     cosm = "Orrorsh";
+                    axioms.put("Magic", 15);
+                    axioms.put("Social", 20);
+                    axioms.put("Spiritual", 17);
+                    axioms.put("Tech", 19);
                     break;
             case 6:
                     cosm = "Nippon Tech";
+                    axioms.put("Magic", 2);
+                    axioms.put("Social", 22);
+                    axioms.put("Spiritual", 8);
+                    axioms.put("Tech", 24);
                     break;
             case 7:
                     cosm = "Living Land";
+                    axioms.put("Magic", 0);
+                    axioms.put("Social", 7);
+                    axioms.put("Spiritual", 24);
+                    axioms.put("Tech", 7);
                     break;
             default:
                     System.out.println("Invalid Entry: Try Again.");
                     chooseCosm();
 
         }
+    }
+
+    private static void buyAttributes() {
+        System.out.println("Choose an archetype:");
+        System.out.println("--------------------");
+        System.out.println("|    Adrenaline    |");
+        System.out.println("|     Willpower    |");
+        System.out.println("|     Presence     |");
+        System.out.println("--------------------");
+        System.out.println("Enter 1 - 3 for your choice:");
+
+        String choice = scanner.nextLine();
+
+        try {
+            int parsedChoice = Integer.parseInt(choice);
+
+            if (parsedChoice > 3 || parsedChoice < 0) {
+                System.out.println("Invalid Entry, try again");
+                buyAttributes();
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid Entry, try again");
+            buyAttributes();
+        }
+
+        //todo create scripting that understands choice and factors in min/max from table above
     }
 }

@@ -3,8 +3,8 @@ public class Main {
     //program that generates a basic Torg character template from the rules in the Player's Guide for scratch characters
 
     //Program Flow
-        //pick Cosm for axioms
         //enter character name
+        //pick Cosm for axioms
         //buy attribute values from skill point pool
         //purchase skill adds in custom input skills, start with Reality skill
         //assign equipment
