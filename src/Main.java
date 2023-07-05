@@ -1,3 +1,5 @@
+import Classes.Creation;
+
 public class Main {
 
     //program that generates a basic Torg character template from the rules in the Player's Guide for scratch characters
@@ -11,6 +13,6 @@ public class Main {
     //STRETCH GOAL
         //save character to local document
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Creation.creationControlFlow();
     }
 }

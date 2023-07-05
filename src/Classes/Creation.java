@@ -11,6 +11,8 @@ public class Creation {
     private static String cosm = "";
     private static Map<String, Integer> axioms = new HashMap<>();
     private static Map<String, Integer> attributes = new HashMap<>();
+    private static Map<String, Integer> skills = new HashMap<>();
+    private static int adds = 16;
     //66 attribute points
     //pick a template, either Adrenalin, Willpower, or Presence
         //Adrenalin:        Willpower:          Presence:
@@ -27,7 +29,7 @@ public class Creation {
 
     //16 skill adds, no more than 3 skill adds to any one skill
 
-    public static void generateName() {
+    private static void generateName() {
         System.out.println("Enter your name");
         playerName = scanner.nextLine();
         System.out.println("Enter a name for your character:");
@@ -119,7 +121,7 @@ public class Creation {
         }
     }
 
-    private static void buyAttributes() {
+    private static void chooseArchetype() {
         System.out.println("Choose an archetype:");
         System.out.println("--------------------");
         System.out.println("|    Adrenaline    |");
@@ -130,18 +132,283 @@ public class Creation {
 
         String choice = scanner.nextLine();
 
+        int parsedChoice = 0;
+
         try {
-            int parsedChoice = Integer.parseInt(choice);
+            parsedChoice = Integer.parseInt(choice);
 
             if (parsedChoice > 3 || parsedChoice < 0) {
                 System.out.println("Invalid Entry, try again");
-                buyAttributes();
+                chooseArchetype();
             }
         } catch (Exception e) {
             System.out.println("Invalid Entry, try again");
-            buyAttributes();
+            chooseArchetype();
         }
 
-        //todo create scripting that understands choice and factors in min/max from table above
+        switch (parsedChoice) {
+            case 1:
+                    buyAdrenalineAttributes();
+                    break;
+            case 2:
+                    buyWillpowerAttributes();
+                    break;
+            case 3:
+                    buyPresenceAttributes();
+                    break;
+            default:
+                System.out.println("Invalid Selection, try again.");
+                chooseArchetype();
+        }
+    }
+
+
+
+    //Adrenalin:        Willpower:          Presence:
+    /*
+     * DEX 11 min        DEX 11 max          DEX 10 max
+     * STR 11 min        STR 11 max          STR 10 max
+     * TOU 11 min        TOU 11 max          TOU 10 max
+     * PER 10 max        PER 11 min          PER 11 max
+     * MIN 11 max        MIN 10 max          MIN 11 min
+     * CHA 11 max        CHA 10 max          CHA 11 min
+     * SPI 11 max        SPI 10 max          SPI 11 min
+     * */
+
+    private static void buyAdrenalineAttributes() {
+        int points = 66;
+        System.out.println("The Adrenaline Archetype favors DEX, STR, TOU and limits PER, MIN, and SPI.");
+        System.out.println("The Minimum Points for DEX, STR, and TOU is 11 each.");
+        System.out.println("The Maximum Points for PER is 10, for MIN, CHA, and SPI it is 11.");
+
+        String[] attributesArray = new String[] {"DEX", "STR", "TOU", "PER", "MIN", "CHA", "SPI"};
+
+        for (int i = 0; i < attributesArray.length; i++) {
+            System.out.println("Points Remaining: " + points);
+            System.out.println("Enter your desired value for " + attributesArray[i]);
+            String choice = scanner.nextLine();
+
+            int parsedChoice = 0;
+
+            try {
+                parsedChoice = Integer.parseInt(choice);
+
+                if (i < 3 && parsedChoice < 11) {
+                    System.out.println("Entered Value below minimum for Attribute. Try again.");
+                    i--;
+                } else if (i == 3 && parsedChoice > 10 || i < 3 && parsedChoice > 11) {
+                    System.out.println("Entered Value above maximum for this Attribute. Try again.");
+                    i--;
+                }
+
+                attributes.put(attributesArray[i], parsedChoice);
+                points -= parsedChoice;
+
+            } catch (Exception e) {
+                System.out.println("Invalid Entry, valid numbers are 1 - attribute max");
+                i--;
+            }
+        }
+
+        if (points != 0) {
+            System.out.println("Invalid Point Distribution. Try again");
+            buyAdrenalineAttributes();
+        }
+    }
+
+
+    //Adrenalin:        Willpower:          Presence:
+    /*
+     * DEX 11 min        DEX 11 max          DEX 10 max
+     * STR 11 min        STR 11 max          STR 10 max
+     * TOU 11 min        TOU 11 max          TOU 10 max
+     * PER 10 max        PER 11 min          PER 11 max
+     * MIN 11 max        MIN 10 min          MIN 11 min
+     * CHA 11 max        CHA 10 max          CHA 11 min
+     * SPI 11 max        SPI 10 max          SPI 11 min
+     * */
+
+
+    private static void buyWillpowerAttributes() {
+        int points = 66;
+        System.out.println("The Willpower Archetype favors PER and MIN while limiting all other Attributes.");
+        System.out.println("The Minimum Points for PER is 11 and for MIN is 10");
+        System.out.println("The Maximum Points for DEX, STR, TOU, CHA, and SPI is 11.");
+
+        String[] attributesArray = new String[] {"DEX", "STR", "TOU", "PER", "MIN", "CHA", "SPI"};
+
+        for (int i = 0; i < attributesArray.length; i++) {
+            System.out.println("Points Remaining: " + points);
+            System.out.println("Enter your desired value for " + attributesArray[i]);
+            String choice = scanner.nextLine();
+
+            int parsedChoice = 0;
+
+            try {
+                parsedChoice = Integer.parseInt(choice);
+
+                if (i == 3 && parsedChoice < 11 || i == 4 && parsedChoice < 10) {
+                    System.out.println("Entered Value below minimum for Attribute. Try again.");
+                    i--;
+                } else if (i != 3 && i != 4 && parsedChoice > 11) {
+                    System.out.println("Entered Value above maximum for this Attribute. Try again.");
+                    i--;
+                }
+
+                attributes.put(attributesArray[i], parsedChoice);
+                points -= parsedChoice;
+
+            } catch (Exception e) {
+                System.out.println("Invalid Entry, valid numbers are 1 - attribute max");
+                i--;
+            }
+        }
+
+        if (points != 0) {
+            System.out.println("Invalid Point Distribution. Try again");
+            buyAdrenalineAttributes();
+        }
+    }
+
+
+
+    //Adrenalin:        Willpower:          Presence:
+    /*
+     * DEX 11 min        DEX 11 max          DEX 10 max
+     * STR 11 min        STR 11 max          STR 10 max
+     * TOU 11 min        TOU 11 max          TOU 10 max
+     * PER 10 max        PER 11 min          PER 11 max
+     * MIN 11 max        MIN 10 min          MIN 11 min
+     * CHA 11 max        CHA 10 max          CHA 11 min
+     * SPI 11 max        SPI 10 max          SPI 11 min
+     * */
+
+
+    private static void buyPresenceAttributes() {
+        int points = 66;
+        System.out.println("The Presence Archetype favors MIN, CHA, and SPI while it limits DEX, STR, TOU, and PER.");
+        System.out.println("The Minimum Points for MIN, CHA, and SPI is 11.");
+        System.out.println("The Maximum Points for DEX STR, and TOU is 10, and for PER it is 11.");
+
+        String[] attributesArray = new String[] {"DEX", "STR", "TOU", "PER", "MIN", "CHA", "SPI"};
+
+        for (int i = 0; i < attributesArray.length; i++) {
+            System.out.println("Points Remaining: " + points);
+            System.out.println("Enter your desired value for " + attributesArray[i]);
+            String choice = scanner.nextLine();
+
+            int parsedChoice = 0;
+
+            try {
+                parsedChoice = Integer.parseInt(choice);
+
+                if (i < 2 && parsedChoice > 10 || i == 3 && parsedChoice > 11) {
+                    System.out.println("Entered Value above maximum for Attribute. Try again.");
+                    i--;
+                } else if (i >= 4 && parsedChoice < 11) {
+                    System.out.println("Entered Value below minimum for this Attribute. Try again.");
+                    i--;
+                }
+
+                attributes.put(attributesArray[i], parsedChoice);
+                points -= parsedChoice;
+
+            } catch (Exception e) {
+                System.out.println("Invalid Entry, valid numbers are 1 - attribute max");
+                i--;
+            }
+        }
+
+        if (points != 0) {
+            System.out.println("Invalid Point Distribution. Try again");
+            buyAdrenalineAttributes();
+        }
+    }
+
+    private static void buySkillAdds() {
+        System.out.println("You have 16 Skill Adds to assign to different skills.\nThe Reality Skill gets the first Adds.");
+        System.out.println("After that, enter the name of the skill and the number of adds given to it.");
+        System.out.println("No one skill can have more than 3 Adds given to it.");
+
+        int realityAdds = realitySkillAdds();
+        skills.put("Reality", realityAdds);
+
+        int numberOfSkills = numberOfSkills();
+
+        for (int i = 0; i < numberOfSkills; i++) {
+            System.out.println("Adds remaining: " + adds);
+            System.out.println("Enter the name of the Skill:");
+            String skillName = scanner.nextLine();
+            System.out.println("Enter the number of Adds, 1 min and 3 max");
+            String assignedAdds = scanner.nextLine();
+
+            int parsedAssignedAdds = 0;
+
+            try {
+                parsedAssignedAdds = Integer.parseInt(assignedAdds);
+
+                if (parsedAssignedAdds < 1 || parsedAssignedAdds > 3) {
+                    System.out.println("Invalid Entry, Adds must be between 1 and 3 Inclusive. Try again.");
+                    i--;
+                }
+
+                skills.put(skillName, parsedAssignedAdds);
+                adds -= parsedAssignedAdds;
+            } catch (Exception e) {
+                System.out.println("Invalid Entry, try again");
+                i--;
+            }
+        }
+    }
+
+    private static int realitySkillAdds() {
+        System.out.println("Total Adds Left: " + adds);
+        System.out.println("Enter the number of Adds given to the Reality Skill:");
+
+        String realityAdds = scanner.nextLine();
+        int parsedRealityAdds = 0;
+
+        try {
+            parsedRealityAdds = Integer.parseInt(realityAdds);
+
+            if (parsedRealityAdds > 3 || parsedRealityAdds < 0) {
+                System.out.println("Invalid Entry, at least one Add must be assigned to Reality with a max of 3 Adds.");
+                realitySkillAdds();
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid Entry, please try again");
+            realitySkillAdds();
+        }
+
+        return parsedRealityAdds;
+    }
+
+    private static int numberOfSkills() {
+        System.out.println("How many Skills will you give your character?");
+        String skillCount = scanner.nextLine();
+
+        int parsedSkillCount = 0;
+
+        try {
+            parsedSkillCount = Integer.parseInt(skillCount);
+
+            if (parsedSkillCount < 1) {
+                System.out.println("Skills must be at least 1.");
+                numberOfSkills();
+            }
+
+        } catch (Exception e) {
+            System.out.println("Invalid Entry, please try again.");
+            numberOfSkills();
+        }
+
+        return parsedSkillCount;
+    }
+
+    public static void creationControlFlow() {
+        generateName();
+        chooseCosm();
+        chooseArchetype();
+        buySkillAdds();
     }
 }
